@@ -12,7 +12,7 @@ from openpyxl.utils.cell import get_column_letter
 import sys 
 
 symbol = Symbols=["فاسمین","فخوز","فملی","فولاد","کرماشا","شفن","شاراک","دکیمی","دجابر","ستران","سرود","ساروم","حتاید","بترانس","حفاری","کچاد","کگل","کروی","اخابر","خبهمن","شپنا","شبهرن","شبریز"]
-startdate = [1398,1,1]
+startdate = [1394,1,1]
 enddate = [1400,12,29]
 From = [9,0,0]
 To =[12,30,0]
@@ -121,12 +121,9 @@ for z in range(0,len(Symbols)) :
             AllBourds[str(dateindex)]=Boards
             j+=1
         except Exception as e :
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-            print(e)
+            pass
 
-    # Boards=AllBourds[list(AllBourds.keys())[0]]
+
     BorderRange([1,1], [len(list(AllBourds.keys()))+2,len(Boards)*2+1])
     AllinMent([1,1], [len(list(AllBourds.keys()))+2,len(Boards)*2+1])
     sheet.cell(1,1).value="Time"
