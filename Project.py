@@ -4,19 +4,19 @@ from copy import copy
 import json
 import os
 from persiantools.jdatetime import JalaliDate
-from pprintpp import pprint
 import openpyxl
 from openpyxl.styles.borders import Border, Side
-from openpyxl.styles import Font
-from openpyxl.utils.cell import get_column_letter
-import sys 
-import threading
-symbol = Symbols=["فاسمین","فخوز","فملی","فولاد","کرماشا","شفن","شاراک","دکیمی","دجابر","ستران","سرود","ساروم","حتاید","بترانس","حفاری","کچاد","کگل","کروی","اخابر","خبهمن","شپنا","شبهرن","شبریز"]
-startdate = [1394,1,1]
-enddate = [1400,12,29]
-From = [9,0,0]
-To =[12,30,0]
-StepTime=600 #Seconds
+
+with open('Config.json',encoding='utf-8') as json_file:
+    Config=json.load(json_file)
+with open("InsCodeDict.json",encoding='utf-8') as json_file:
+    NamadDict=json.load(json_file)
+Symbols= Config['Symbols']
+startdate = Config['startdate']
+enddate = Config['enddate']
+From = Config['From']
+To = Config['To']
+StepTime=Config['StepTime'] #Seconds
 
 thin_border = Border(left=Side(style='thin'),
                         right=Side(style='thin'),
@@ -45,11 +45,8 @@ def AllinMent(sheet,From, To):
 
 
 headers={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.61","Accept-Language":"en-US,en;q=0.9,fa;q=0.8","Connection": "keep-alive","Cookie": "ASP.NET_SessionId=kislljlalcplvzmn2q2ycni0"}
-module_dir = os.path.dirname(__file__)
-file_path = os.path.join(module_dir, 'InsCodeDict.json')
 
-with open(file_path,encoding='utf-8') as json_file:
-    NamadDict=json.load(json_file)
+
 
 def GetSymbolHistory(symbol):
     
@@ -147,4 +144,5 @@ for symbol in Symbols:
     k+=1
     print(k,symbol)
     GetSymbolHistory(symbol)
+input()
 
