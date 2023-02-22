@@ -122,8 +122,8 @@ while j <=i2:
         print(e)
 
 # Boards=AllBourds[list(AllBourds.keys())[0]]
-BorderRange([1,1], [len(list(AllBourds.keys())),len(Boards)*2])
-AllinMent([1,1], [len(list(AllBourds.keys())),len(Boards)*2])
+BorderRange([1,1], [len(list(AllBourds.keys()))+2,len(Boards)*2+1])
+AllinMent([1,1], [len(list(AllBourds.keys()))+2,len(Boards)*2+1])
 sheet.cell(1,1).value="Time"
 sheet.cell(2,1).value="Date"
 for i in range(0,len(Boards)):
