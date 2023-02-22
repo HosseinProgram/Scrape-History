@@ -10,7 +10,7 @@ from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import Font
 from openpyxl.utils.cell import get_column_letter
 import sys 
-
+import threading
 symbol = Symbols=["فاسمین","فخوز","فملی","فولاد","کرماشا","شفن","شاراک","دکیمی","دجابر","ستران","سرود","ساروم","حتاید","بترانس","حفاری","کچاد","کگل","کروی","اخابر","خبهمن","شپنا","شبهرن","شبریز"]
 startdate = [1394,1,1]
 enddate = [1400,12,29]
@@ -23,26 +23,19 @@ thin_border = Border(left=Side(style='thin'),
                         top=Side(style='thin'),
                         bottom=Side(style='thin'))
 
-def SetFontAndCell(sizef, sizec, From, To):
-    fontStyle = Font(size=str(sizef))
 
-    for j in range(From[1], To[1] + 1):
-        for i in range(From[0], To[0] + 1):
-            sheet.cell(row=i, column=j).font = fontStyle
-        sheet.column_dimensions[get_column_letter(j)].width = sizec
-
-def MergeAndBorder(From, To):
+def MergeAndBorder(sheet,From, To):
     for i in range(From[0], To[0] + 1):
         for j in range(From[1], To[1] + 1):
             sheet.cell(row=i, column=j).border = thin_border
     sheet.merge_cells(start_row=From[0], start_column=From[1], end_row=To[0], end_column=To[1])
 
-def BorderRange(From, To):
+def BorderRange(sheet,From, To):
     for i in range(From[0], To[0] + 1):
         for j in range(From[1], To[1] + 1):
             sheet.cell(row=i, column=j).border = thin_border
 
-def AllinMent(From, To):
+def AllinMent(sheet,From, To):
     for i in range(From[0], To[0] + 1):
         for j in range(From[1], To[1] + 1):
             alignment_obj = copy(sheet.cell(row=i, column=j).alignment)
@@ -58,9 +51,8 @@ file_path = os.path.join(module_dir, 'InsCodeDict.json')
 with open(file_path,encoding='utf-8') as json_file:
     NamadDict=json.load(json_file)
 
-for z in range(0,len(Symbols)) :
-    symbol=Symbols[z]
-    print(z+1,symbol)
+def GetSymbolHistory(symbol):
+
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     Start_Date=JalaliDate(startdate[0], startdate[1] , startdate[2]).to_gregorian()
@@ -124,15 +116,15 @@ for z in range(0,len(Symbols)) :
             pass
 
 
-    BorderRange([1,1], [len(list(AllBourds.keys()))+2,len(Boards)*2+1])
-    AllinMent([1,1], [len(list(AllBourds.keys()))+2,len(Boards)*2+1])
+    BorderRange(sheet,[1,1], [len(list(AllBourds.keys()))+2,len(Boards)*2+1])
+    AllinMent(sheet,[1,1], [len(list(AllBourds.keys()))+2,len(Boards)*2+1])
     sheet.cell(1,1).value="Time"
     sheet.cell(2,1).value="Date"
     for i in range(0,len(Boards)):
         boardstr=str(Boards[i][0])
         clock=boardstr[0:-4]+":"+boardstr[-4:-2]+":"+boardstr[-2:]
         sheet.cell(1,2*(i+1)).value=clock
-        MergeAndBorder([1,2*(i+1)], [1,2*(i+1)+1])
+        MergeAndBorder(sheet,[1,2*(i+1)], [1,2*(i+1)+1])
         sheet.cell(2,2*(i+1)).value="Buy"
         sheet.cell(2,2*(i+1)+1).value="Sale"
 
@@ -150,5 +142,6 @@ for z in range(0,len(Symbols)) :
     sheet.freeze_panes ="A3"
     workbook.save(symbol+".xlsx")
 
-
+for symbol in Symbols:
+    threading.Thread(target=lambda :GetSymbolHistory(symbol)).start()
 
