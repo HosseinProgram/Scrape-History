@@ -143,5 +143,5 @@ def GetSymbolHistory(symbol):
     workbook.save(symbol+".xlsx")
 
 for symbol in Symbols:
-    threading.Thread(target=lambda :GetSymbolHistory(symbol)).start()
+    GetSymbolHistory(symbol)
 
