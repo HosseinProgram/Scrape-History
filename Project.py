@@ -52,7 +52,7 @@ with open(file_path,encoding='utf-8') as json_file:
     NamadDict=json.load(json_file)
 
 def GetSymbolHistory(symbol):
-
+    
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     Start_Date=JalaliDate(startdate[0], startdate[1] , startdate[2]).to_gregorian()
@@ -142,6 +142,9 @@ def GetSymbolHistory(symbol):
     sheet.freeze_panes ="A3"
     workbook.save(symbol+".xlsx")
 
+k=0
 for symbol in Symbols:
+    k+=1
+    print(k,symbol)
     GetSymbolHistory(symbol)
 
