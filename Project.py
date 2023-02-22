@@ -7,6 +7,7 @@ from persiantools.jdatetime import JalaliDate
 import openpyxl
 from openpyxl.styles.borders import Border, Side
 import threading
+import time
 with open('Config.json',encoding='utf-8') as json_file:
     Config=json.load(json_file)
 with open("InsCodeDict.json",encoding='utf-8') as json_file:
@@ -153,6 +154,8 @@ for symbol in Symbols:
     k+=1
     print(k,symbol)
     threading.Thread(target=lambda: GetSymbolHistory(symbol)).start()
+while threading.active_count() > 1:
+    time.sleep(1)
 print("======================================================================================")
 print('The Program Is Done Successfully! \n\nPress any key to close the Program')
 print("======================================================================================")
