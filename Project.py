@@ -6,11 +6,15 @@ import os
 from persiantools.jdatetime import JalaliDate
 import openpyxl
 from openpyxl.styles.borders import Border, Side
-
+import threading
 with open('Config.json',encoding='utf-8') as json_file:
     Config=json.load(json_file)
 with open("InsCodeDict.json",encoding='utf-8') as json_file:
     NamadDict=json.load(json_file)
+try:
+    os.makedirs('export')
+except:
+    pass
 Symbols= Config['Symbols']
 startdate = Config['startdate']
 enddate = Config['enddate']
@@ -64,7 +68,14 @@ def GetSymbolHistory(symbol):
     dateendindex=int(str(End_Date.year)+("0"+str(End_Date.month))[-2:]+("0"+str(End_Date.day))[-2:])
 
     OrderRanking = [{},{},{},{},{}]
-    ActiveList=requests.get("http://www.tsetmc.com/tsev2/data/InstTradeHistory.aspx?i=%s&Top=999999&A=1"%index).text.split(";")
+
+    while True:
+        try:
+            ActiveList=requests.get("http://www.tsetmc.com/tsev2/data/InstTradeHistory.aspx?i=%s&Top=999999&A=1"%index,timeout=5).text.split(";")
+            break
+        except:
+            pass
+            
     ActiveDates=list()
     for date in ActiveList:
         try: 
@@ -89,17 +100,15 @@ def GetSymbolHistory(symbol):
     while j <=i2:
         dateindex = ActiveDates[j]
         dateindex2=str(dateindex)
-        print(JalaliDate.to_jalali(int(dateindex2[0:4]) ,int(dateindex2[4:6]) ,int(dateindex2[6:8])).strftime("%Y/%m/%d"))
+        print(symbol +" @ ", JalaliDate.to_jalali(int(dateindex2[0:4]) ,int(dateindex2[4:6]) ,int(dateindex2[6:8])).strftime("%Y/%m/%d"))
         try:
-            BestLimits = requests.get('http://cdn.tsetmc.com/api/BestLimits/%s/%s'%(index,dateindex),headers=headers).json()["bestLimitsHistory"]
+            BestLimits = requests.get('http://cdn.tsetmc.com/api/BestLimits/%s/%s'%(index,dateindex),headers=headers,timeout=5).json()["bestLimitsHistory"]
             CurrentClock = copy(Start_Date)
             EndClock = copy(Start_Date.replace(hour=To[0],minute=To[1],second=To[2]))
             Boards = list()
             while CurrentClock<=EndClock :
                 CurrentHEven = int(str(CurrentClock.hour) + ("0"+str(CurrentClock.minute))[-2:] +("0"+str(CurrentClock.second))[-2:])
 
-                maxBuy=0
-                minSale = 0
                 for limit in BestLimits:
                     if CurrentHEven >= limit["hEven"] :
                         OrderRanking[limit["number"]-1]=limit
@@ -137,12 +146,15 @@ def GetSymbolHistory(symbol):
             sheet.cell(j+3,2*(i+1)+1).value=board[2]
     sheet.column_dimensions['A'].width=12
     sheet.freeze_panes ="A3"
-    workbook.save(symbol+".xlsx")
+    workbook.save("export/"+symbol+".xlsx")
 
 k=0
 for symbol in Symbols:
     k+=1
     print(k,symbol)
-    GetSymbolHistory(symbol)
+    threading.Thread(target=lambda: GetSymbolHistory(symbol)).start()
+print("======================================================================================")
+print('The Program Is Done Successfully! \n\nPress any key to close the Program')
+print("======================================================================================")
 input()
 
