@@ -58,8 +58,9 @@ file_path = os.path.join(module_dir, 'InsCodeDict.json')
 with open(file_path,encoding='utf-8') as json_file:
     NamadDict=json.load(json_file)
 
-for symbol in Symbols :
-    print(symbol)
+for z in range(0,len(Symbols)) :
+    symbol=Symbols[z]
+    print(z+1,symbol)
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     Start_Date=JalaliDate(startdate[0], startdate[1] , startdate[2]).to_gregorian()
