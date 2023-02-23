@@ -72,7 +72,7 @@ def GetSymbolHistory(symbol):
 
     while True:
         try:
-            ActiveList=requests.get("http://www.tsetmc.com/tsev2/data/InstTradeHistory.aspx?i=%s&Top=999999&A=1"%index,timeout=5).text.split(";")
+            ActiveList=requests.get("http://www.tsetmc.com/tsev2/data/InstTradeHistory.aspx?i=%s&Top=999999&A=0"%index,timeout=5).text.split(";")
             break
         except:
             pass
@@ -103,10 +103,6 @@ def GetSymbolHistory(symbol):
         dateindex2=str(dateindex)
         try:
             BestLimits = requests.get('http://cdn.tsetmc.com/api/BestLimits/%s/%s'%(index,dateindex),headers=headers,timeout=5).json()["bestLimitsHistory"]
-            ClosingPrice = len(list(requests.get('http://cdn.tsetmc.com/api/ClosingPrice/GetClosingPriceHistory/%s/%s'%(index,dateindex),headers=headers,timeout=5).json()["closingPriceHistory"]))
-            if ClosingPrice==1:
-                j+=1
-                raise Exception
             print(symbol +" @ ", JalaliDate.to_jalali(int(dateindex2[0:4]) ,int(dateindex2[4:6]) ,int(dateindex2[6:8])).strftime("%Y/%m/%d"))
             CurrentClock = copy(Start_Date)
             EndClock = copy(Start_Date.replace(hour=To[0],minute=To[1],second=To[2]))
@@ -150,7 +146,7 @@ def GetSymbolHistory(symbol):
             sheet.cell(j+3,2*(i+1)).value=board[1]
             sheet.cell(j+3,2*(i+1)+1).value=board[2]
     sheet.column_dimensions['A'].width=12
-    sheet.freeze_panes ="A3"
+    sheet.freeze_panes ="B3"
     workbook.save("export/"+symbol+".xlsx")
 
 k=0
