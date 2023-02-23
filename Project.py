@@ -91,19 +91,23 @@ def GetSymbolHistory(symbol):
             break
     for i in range(0,len(ActiveDates)):
         date=ActiveDates[i]
-        if date >= dateendindex:
+        if date > dateendindex:
             i2=i
             break
 
     AllBourds=dict()
 
     j=i1
-    while j <=i2:
+    while j <i2:
         dateindex = ActiveDates[j]
         dateindex2=str(dateindex)
-        print(symbol +" @ ", JalaliDate.to_jalali(int(dateindex2[0:4]) ,int(dateindex2[4:6]) ,int(dateindex2[6:8])).strftime("%Y/%m/%d"))
         try:
             BestLimits = requests.get('http://cdn.tsetmc.com/api/BestLimits/%s/%s'%(index,dateindex),headers=headers,timeout=5).json()["bestLimitsHistory"]
+            ClosingPrice = len(list(requests.get('http://cdn.tsetmc.com/api/ClosingPrice/GetClosingPriceHistory/%s/%s'%(index,dateindex),headers=headers,timeout=5).json()["closingPriceHistory"]))
+            if ClosingPrice==1:
+                j+=1
+                raise Exception
+            print(symbol +" @ ", JalaliDate.to_jalali(int(dateindex2[0:4]) ,int(dateindex2[4:6]) ,int(dateindex2[6:8])).strftime("%Y/%m/%d"))
             CurrentClock = copy(Start_Date)
             EndClock = copy(Start_Date.replace(hour=To[0],minute=To[1],second=To[2]))
             Boards = list()
@@ -157,7 +161,8 @@ for symbol in Symbols:
 while threading.active_count() > 1:
     time.sleep(1)
 print("======================================================================================")
-print('The Program Is Done Successfully! \n\nPress any key to close the Program')
+print('The Program Is Done Successfully! ')
 print("======================================================================================")
+print('\n\nPress any key to close the Program')
 input()
 
