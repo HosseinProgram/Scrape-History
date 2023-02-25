@@ -1,5 +1,5 @@
 # Scrape-History
- Scrapping History of tsetmc
+Scrapping History of tsetmc \n
 This program makes a list of best offers of tsetmc boards of all symbols.
 you can modify Config.json file like this:
 
@@ -11,11 +11,11 @@ you can modify Config.json file like this:
 "StepTime": 600
 }
 
-Symbols is list of desierd symbols , 
-startdate is fisrt desiered date
-enddate is last desiered date
-from is start time of day
-to is end time of day
+Symbols is list of desierd symbols ; 
+startdate is fisrt desiered date;
+enddate is last desiered date;
+from is start time of day;
+to is end time of day;
 steptime is steps of scraping board
 
 Project.py is source of that and Execuatable/project.exe is executable version
