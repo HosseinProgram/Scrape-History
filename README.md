@@ -12,17 +12,17 @@ you can modify Config.json file like this:
 "StepTime": 600
 }
 
-Symbols is list of desierd symbols ; 
+"Symbols" is list of desierd symbols ; 
 
-startdate is fisrt desiered date;
+"startdate" is first desiered date;
 
-enddate is last desiered date;
+"enddate" is last desiered date;
 
-from is start time of day;
+"From" is start time of day;
 
-to is end time of day;
+"To" is end time of day;
 
-steptime is steps of scraping board
+and "Steptime" is distance between steps of scraping board
 
 Project.py is source of that and Execuatable/project.exe is executable version
 
