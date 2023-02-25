@@ -3,7 +3,7 @@
 This program makes a list of best offers of tsetmc boards of all symbols.
 you can modify Config.json file like this:
 
-{"Symbols":["غگیلا","فولاد","مپنا"],
+{"Symbols":["غگیلا","فولاد","فملی"],
 "startdate" : [1394,1,1],
 "enddate" : [1400,12,29],
 "From" : [9,0,0],
@@ -19,6 +19,8 @@ to is end time of day
 steptime is steps of scraping board
 
 Project.py is source of that and Execuatable/project.exe is executable version
-program return xlsx file per each symbols like : فولاد.xlsx
+program return xlsx file per each symbols likes this:
+
+![Capture](https://user-images.githubusercontent.com/104124540/221358136-19fb2865-d035-430e-938f-b66f8ae15ac6.JPG)
 
 lets' Enjoy!
