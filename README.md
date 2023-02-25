@@ -1,7 +1,7 @@
 # Scrape-History
 Scrapping History of tsetmc
 
-This program makes a list of best offers of tsetmc boards of all symbols.
+This program makes a list of best offers of tsetmc boards of all symbols in multi Threads fast and furious!
 you can modify Config.json file like this:
 
 {"Symbols":["غگیلا","فولاد","فملی"],
